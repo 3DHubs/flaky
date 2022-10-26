@@ -406,6 +406,7 @@ class FlakyPlugin(_FlakyPlugin):
             log_file_path = os.path.join(self.log_file)
             with open(log_file_path, 'w+') as log_file:
                 log_file.write(self.stream.getvalue())
+            self._stream.writelines([f"Flaky test log written to {log_file_path}"])
 
 
 PLUGIN = FlakyPlugin()
