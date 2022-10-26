@@ -1,3 +1,5 @@
+import os
+
 from _pytest import runner  # pylint:disable=import-error
 
 from flaky._flaky_plugin import _FlakyPlugin
@@ -39,6 +41,7 @@ class FlakyPlugin(_FlakyPlugin):
     force_flaky = False
     max_runs = None
     min_passes = None
+    log_file = None
     config = None
     _call_infos = {}
     _PYTEST_WHEN_SETUP = 'setup'
@@ -215,6 +218,7 @@ class FlakyPlugin(_FlakyPlugin):
         self.force_flaky = config.option.force_flaky
         self.max_runs = config.option.max_runs
         self.min_passes = config.option.min_passes
+        self.log_file = config.option.log_file
         self.runner = config.pluginmanager.getplugin("runner")
 
         if config.pluginmanager.hasplugin('xdist'):
@@ -398,6 +402,10 @@ class FlakyPlugin(_FlakyPlugin):
             str(err[2]),
             '\n',
         ])
+        if self.log_file:
+            log_file_path = os.path.join(self.log_file)
+            with open(log_file_path, 'w+') as log_file:
+                log_file.write(self.stream.getvalue())
 
 
 PLUGIN = FlakyPlugin()

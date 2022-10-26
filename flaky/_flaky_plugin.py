@@ -322,6 +322,15 @@ class _FlakyPlugin:
                  "in the report at the end of the "
                  "run detailing flaky test results.",
         )
+        add_option(
+            '--flaky-log-file',
+            action="store",
+            dest="log_file",
+            type=str,
+            default=None,
+            help="If --flaky-log-file is specified, we will log all flaky "
+                 "test runs to the given file."
+        )
 
     @staticmethod
     def add_force_flaky_options(add_option):
